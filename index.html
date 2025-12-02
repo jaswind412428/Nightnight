@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>NEONSLEEP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script>
+      // ------------------------------------------------------------------
+      // POLYFILL: Fix 'process is not defined' for Mobile/Webview encapsulation
+      // ------------------------------------------------------------------
+      if (typeof process === 'undefined') {
+        window.process = {
+          env: {
+            // 注意：封裝成手機 App 時，若打包工具沒有自動注入環境變數，
+            // 您可能需要在此處手動指定 API Key，或確認您的打包配置 (如 Vite/Webpack) 已正確替換。
+            // API_KEY: "YOUR_API_KEY_HERE" 
+          }
+        };
+      } else if (!process.env) {
+        process.env = {};
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Share Tech Mono', monospace;
+        background-color: #020617; /* Deep Slate/Blue Black */
+        color: #e0f2fe;
+        -webkit-tap-highlight-color: transparent;
+      }
+      /* Hide scrollbar for clean UI */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* Neon Glow Text Utilities */
+      .text-glow-pink {
+        text-shadow: 0 0 10px rgba(236, 72, 153, 0.7), 0 0 20px rgba(236, 72, 153, 0.5);
+      }
+      .text-glow-blue {
+        text-shadow: 0 0 10px rgba(34, 211, 238, 0.7), 0 0 20px rgba(34, 211, 238, 0.5);
+      }
+      
+      .box-glow-pink {
+        box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+      }
+
+      /* Breathing Glow Animations */
+      @keyframes breathe-cyan {
+        0%, 100% { box-shadow: 0 0 30px rgba(34,211,238,0.4), inset 0 0 10px rgba(34,211,238,0.2); border-color: rgba(34,211,238,0.8); }
+        50% { box-shadow: 0 0 60px rgba(34,211,238,0.8), inset 0 0 20px rgba(34,211,238,0.4); border-color: rgba(34,211,238,1); }
+      }
+      @keyframes breathe-pink {
+        0%, 100% { box-shadow: 0 0 30px rgba(236,72,153,0.5), inset 0 0 10px rgba(236,72,153,0.3); border-color: rgba(236,72,153,0.8); }
+        50% { box-shadow: 0 0 70px rgba(236,72,153,0.9), inset 0 0 25px rgba(236,72,153,0.6); border-color: rgba(236,72,153,1); }
+      }
+      .animate-breathe-cyan {
+        animation: breathe-cyan 3s infinite ease-in-out;
+      }
+      .animate-breathe-pink {
+        animation: breathe-pink 3s infinite ease-in-out;
+      }
+
+      /* Shop Redemption Neural Scan Animation */
+      @keyframes neural-scan {
+        0% { transform: translateY(100%); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100%); opacity: 0; }
+      }
+      .animate-neural-scan {
+        animation: neural-scan 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      /* Circuit Lines Drawing - Shoot Up Effect */
+      /* Dashes are 400px long, gaps are 3000px long. 
+         Start offset 400 means we start in the gap (invisible). 
+         End offset -3000 means we move forward enough to clear the screen. */
+      .path-shoot {
+        stroke-dasharray: 400 3000; 
+        stroke-dashoffset: 400; 
+        animation: dash-shoot 1s ease-in forwards;
+      }
+      @keyframes dash-shoot {
+        0% { stroke-dashoffset: 400; opacity: 1; }
+        100% { stroke-dashoffset: -3000; opacity: 0; } 
+      }
+
+      /* Simple Fade Out for static elements (dots/nodes) */
+      @keyframes fade-out-pure {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+      .animate-fade-out-pure {
+        animation: fade-out-pure 0.8s ease-in forwards;
+      }
+
+      /* 
+         Login Exit: Dark Glitch Shutdown
+         Updated: No white flash (invert/brightness). Purely geometric tear and color shift.
+      */
+      @keyframes glitch-shutdown {
+        0% { clip-path: inset(0 0 0 0); transform: translate(0) scale(1); filter: contrast(1); opacity: 1; }
+        15% { clip-path: inset(10% -5px 70% 0); transform: translate(-5px, 2px) skew(10deg); filter: contrast(2) hue-rotate(90deg); }
+        30% { clip-path: inset(70% -5px 10% 0); transform: translate(5px, -2px) skew(-10deg); filter: contrast(2) hue-rotate(-90deg); }
+        50% { clip-path: inset(40% -5px 40% 0); transform: scale(1.1); opacity: 0.8; }
+        100% { clip-path: inset(50% 0 50% 0); transform: scaleX(2) scaleY(0.01); filter: blur(10px); opacity: 0; }
+      }
+      .animate-glitch-shutdown {
+        animation: glitch-shutdown 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+
+      /* 
+         Main App Entry: Glitch Materialize
+         Reverses the shutdown effect: Expands from a horizontal line.
+      */
+      @keyframes glitch-entry {
+        0% { clip-path: inset(50% 0 50% 0); transform: scaleX(1.5) scaleY(0.01); filter: blur(10px) hue-rotate(90deg); opacity: 0; }
+        40% { clip-path: inset(0 0 0 0); transform: scaleX(1) scaleY(1.1); filter: contrast(1.5) hue-rotate(-45deg); opacity: 0.8; }
+        70% { transform: scale(0.98); filter: none; opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .animate-glitch-entry {
+        animation: glitch-entry 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      }
+
+      /* 
+         Shop Feedback: Optical Tear 
+         Focus: Clip-path opening (Tearing) + Scale + Color
+         NO SHAKING. Middle state is perfectly static.
+      */
+      @keyframes tear-in-out {
+        0% { 
+            clip-path: inset(50% 0 49% 0); 
+            transform: scaleX(0.1); 
+            opacity: 0; 
+            filter: brightness(2) contrast(1.5);
+        }
+        /* Snaps open instantly */
+        15% { 
+            clip-path: inset(0 0 0 0); 
+            transform: scaleX(1); 
+            opacity: 1; 
+            filter: none; /* Reset all filters for stability */
+        }
+        /* Perfectly static hold */
+        85% {
+            clip-path: inset(0 0 0 0);
+            transform: scaleX(1); 
+            opacity: 1;
+            filter: none;
+        }
+        /* Zips closed into a line */
+        100% { 
+            clip-path: inset(49% 0 50% 0); 
+            transform: scaleX(4) scaleY(0.1); 
+            opacity: 0; 
+        }
+      }
+      .animate-tear-in-out {
+        animation: tear-in-out 1.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      }
+
+      @keyframes boot-sequence {
+        0% { transform: translateY(20px); opacity: 0; filter: blur(5px); }
+        100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+      }
+      .animate-boot-sequence {
+        animation: boot-sequence 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* 
+         Text Glitch: Chromatic Aberration + Skew 
+         NO Translate (Shaking)
+      */
+      @keyframes glitch-color {
+        0% { text-shadow: 2px 0 #e879f9, -2px 0 #22d3ee; transform: skewX(0deg); }
+        25% { text-shadow: -2px 0 #e879f9, 2px 0 #22d3ee; transform: skewX(5deg); }
+        50% { text-shadow: 2px 0 #e879f9, -2px 0 #22d3ee; transform: skewX(-5deg); }
+        75% { text-shadow: -2px 0 #e879f9, 2px 0 #22d3ee; transform: skewX(2deg); }
+        100% { text-shadow: -2px 0 #e879f9, 2px 0 #22d3ee; transform: skewX(0deg); }
+      }
+      .animate-glitch {
+        animation: glitch-color 0.15s infinite;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
