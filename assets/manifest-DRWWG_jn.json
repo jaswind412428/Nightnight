@@ -1,17 +1,1 @@
-{
-  "name": "Nightnight", 
-  "short_name": "Nightnight",
-  "description": "您的 vibe coding 專案的 PWA 版本",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#020617",
-  "icons": [
-    {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
-}
+
